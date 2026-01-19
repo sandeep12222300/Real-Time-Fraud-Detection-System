@@ -1,0 +1,23 @@
+server:
+  port: 8081
+
+spring:
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all
+      retries: 5
+      properties:
+        retry.backoff.ms: 1000
+        enable.idempotence: true
+        max.in.flight.requests.per.connection: 5
+
+kafka:
+  topic:
+    transactions: transactions
+
+ml:
+  service:
+    url: ${ML_SERVICE_URL}
