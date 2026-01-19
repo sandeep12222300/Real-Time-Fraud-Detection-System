@@ -1,0 +1,52 @@
+name: CI - Build & Validate
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # -------------------------
+      # Java - Fraud Processor
+      # -------------------------
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build Fraud Processor
+        working-directory: fraud-processor
+        run: mvn clean package -DskipTests
+
+      - name: Build Transaction Producer
+        working-directory: transaction-producer
+        run: mvn clean package -DskipTests
+
+      # -------------------------
+      # Python - ML Service
+      # -------------------------
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install ML dependencies
+        working-directory: fraud-ml-service
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # -------------------------
+      # Docker Compose Validation
+      # -------------------------
+      - name: Validate Docker Compose file
+        run: docker compose config
