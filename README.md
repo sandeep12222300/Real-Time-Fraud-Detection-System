@@ -14,7 +14,6 @@
 ![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-ML-F7931E?logo=scikitlearn&logoColor=white)
 
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
-![Node.js](https://img.shields.io/badge/Node.js-18+-339933?logo=nodedotjs&logoColor=white)
 
 ![Kafka](https://img.shields.io/badge/Apache%20Kafka-7.5.0-231F20?logo=apachekafka&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-4169E1?logo=postgresql&logoColor=white)
