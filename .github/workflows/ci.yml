@@ -50,3 +50,21 @@ jobs:
       # -------------------------
       - name: Validate Docker Compose file
         run: docker compose config
+
+      # -------------------------
+      # Docker Image Builds (CI)
+      # -------------------------
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Fraud Processor image
+        run: docker build -t fraud-processor:ci ./fraud-processor
+
+      - name: Build Transaction Producer image
+        run: docker build -t transaction-producer:ci ./transaction-producer
+
+      - name: Build ML Service image
+        run: docker build -t fraud-ml-service:ci ./fraud-ml-service
+
+      - name: Build Fraud Dashboard image
+        run: docker build -t fraud-dashboard:ci ./fraud-dashboard
