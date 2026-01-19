@@ -1,0 +1,297 @@
+* { box-sizing: border-box; }
+:root {
+  --bg-start: #0b1220; /* slightly lighter / softer dark start */
+  --bg-end: #0f1724;   /* slightly lighter / softer dark end */
+  --primary: #2563EB;
+  --fraud: #EF4444;
+  --safe: #22C55E;
+  --text: #E6EEF9;
+  --muted: #97a6b8; /* a touch lighter muted for better contrast */
+  --card: #0e1a2a; /* slightly lighter card bg */
+  --card-2: #112433;
+  --glass: rgba(255,255,255,0.03);
+  --shadow-strong: 0 18px 40px rgba(2,6,23,0.6);
+  --shadow-medium: 0 10px 24px rgba(2,6,23,0.45);
+  --shadow-light: 0 6px 14px rgba(2,6,23,0.35);
+  --radius: 12px;
+  --topnav-h: 64px;
+  --footer-h: 48px;
+}
+
+/* Root page container: fills viewport and centers the dashboard */
+.page {
+  background-image: linear-gradient(180deg,var(--bg-start),var(--bg-end));
+  /* allow either root-controlled 100% or fallback to full viewport */
+  height: 100%;
+  min-height: 100vh; /* ensure it always covers the viewport */
+  padding: 8px 10px; /* reduced padding to avoid overflow */
+  color: var(--text);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  display: flex;
+  flex-direction: column; /* ensure vertical flow so .main can flex */
+  justify-content: flex-start; /* align to top so dashboard fills vertical space */
+  align-items: stretch;
+  overflow: hidden; /* prevent outer scrolling */
+}
+
+/* Main container is a vertical flex column: header, content (scrollable), footer */
+.main {
+  width: 100%;
+  max-width: 100%; /* allow full-width layout to fit the browser */
+  display:flex;
+  flex-direction:column;
+  flex: 1 1 auto; /* take remaining space inside .page */
+  min-height: 0; /* allow children to shrink properly */
+  padding: 0; /* tighter layout so content fits */
+}
+
+/* Top navigation - fixed at top within the main layout (sticky), slight blur */
+.topNav {
+  height: var(--topnav-h);
+  flex: 0 0 var(--topnav-h);
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: rgba(6,18,32,0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-radius: 10px;
+  box-shadow: var(--shadow-light);
+}
+.topLeft { display:flex; flex-direction:column; }
+.pageTitle { font-size: 18px; font-weight: 600; color: var(--text); }
+.pageSubtitle { font-size: 12px; color: var(--muted); margin-top: 2px }
+
+.topRight { display:flex; align-items:center; gap:12px }
+.search { display:flex; align-items:center; gap:8px; background: rgba(255,255,255,0.02); padding:8px 10px; border-radius:8px; }
+.searchInput { background: transparent; border: none; outline: none; color: var(--text); font-size:13px; width:220px; }
+.iconBtn { background: transparent; border: none; padding:8px; border-radius:8px; color:var(--muted); cursor:pointer; }
+.iconBtn:hover { color: var(--text); transform: translateY(-2px); }
+.profile { display:flex; align-items:center; gap:8px }
+.avatar { width:36px; height:36px; border-radius:8px; background: linear-gradient(90deg,#3b82f6,#7c3aed); display:flex; align-items:center; justify-content:center; color:white; font-weight:700; }
+.profileName { font-size:13px; color:var(--muted) }
+
+/* Content area fills remaining height and is a column flex container */
+.content {
+  margin-top: 10px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  flex: 1 1 auto; /* fill remaining vertical space */
+  min-height: 0; /* allow children to shrink */
+  overflow: hidden; /* disable scrolling here; only table scrolls */
+  padding-bottom: calc(var(--footer-h) + 28px); /* ensure content is not hidden under footer */
+}
+
+/* Grid wrapper used inside content to group charts and the bottom section */
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* same spacing used across content */
+  flex: 1 1 auto; /* fill remaining space inside .content so bottomRow can flex */
+}
+
+/* KPI Row - responsive grid using auto-fit minmax */
+.kpiRow {
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+  margin: 6px 0;
+  align-items: center;
+}
+.statCard {
+  padding: 14px 16px; /* slightly larger padding for premium feel */
+  background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+  border-radius: 14px;
+  box-shadow: var(--shadow-medium);
+  transition: transform .18s ease, box-shadow .18s ease;
+  display:flex;
+  flex-direction:column;
+}
+.statCard:hover { transform: translateY(-6px); box-shadow: var(--shadow-strong); }
+.statTop { display:flex; align-items:center; gap:12px }
+.statIcon { width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:8px; flex-shrink:0 }
+.statLabel { font-size:13px; color: var(--muted); }
+.statValueRow { display:flex; align-items:baseline; justify-content:space-between; margin-top:10px }
+.statValue { font-size:28px; font-weight:800; color: var(--text); line-height:1 }
+.statDelta { font-size:13px; color:var(--muted); }
+.deltaPerc { font-weight:700; }
+
+/* Delta badge: small pill with up/down color */
+.deltaBadge {
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 8px;
+  border-radius:999px;
+  font-weight:700;
+  font-size:12px;
+  color: #05121a;
+}
+.deltaUp { background: linear-gradient(90deg, rgba(34,197,94,0.95), rgba(134,239,172,0.9)); box-shadow: 0 6px 14px rgba(34,197,94,0.06); }
+.deltaDown { background: linear-gradient(90deg, rgba(239,68,68,0.95), rgba(251,113,133,0.9)); box-shadow: 0 6px 14px rgba(239,68,68,0.06); }
+
+/* Charts row: two columns on wide screens, stacked on small screens */
+.chartsRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  align-items: stretch;
+  flex: 0 0 auto; /* don't flex-grow; let bottomRow take remaining space */
+}
+.chartCard {
+  padding: 12px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  box-shadow: var(--shadow-medium);
+  display:flex;
+  flex-direction:column;
+  overflow: hidden;
+}
+.chartHeader { font-size:13px; color:var(--muted); margin-bottom:8px }
+.chartBody { height: 260px; min-height: 140px; }
+
+/* Make charts adapt on small screens */
+@media (max-width: 1100px) {
+  .chartsRow { grid-template-columns: 1fr; }
+  .chartBody { height: 220px }
+}
+@media (max-width: 700px) {
+  .chartBody { height: 180px }
+}
+
+/* Recent Predictions Table - occupies remaining space but allows internal scroll */
+.bottomRow {
+  flex: 1 1 auto;
+  min-height: 0;
+  display:flex;
+  flex-direction:column;
+}
+.tableCard {
+  display:flex;
+  flex-direction:column;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  padding: 12px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-light);
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+.tableHeader { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px }
+.tableWrap {
+  overflow: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+  border-radius: 8px;
+  -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
+
+  /* ensure the scrollable table leaves room for the footer so content isn't obscured */
+  box-sizing: border-box;
+  padding-bottom: calc(var(--footer-h) + 28px);
+
+  /* CSS fallback height: viewport minus header/footer and estimated KPI+charts height (~360px)
+     This gives the table an initial scrollable area even before JS measurement runs. */
+  height: calc(100vh - var(--topnav-h) - var(--footer-h) - 360px);
+
+  /* Scrollbar styling: Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.10) transparent;
+}
+
+/* WebKit browsers (Chrome, Edge, Safari) */
+.tableWrap::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.tableWrap::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 8px;
+}
+.tableWrap::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+  border-radius: 8px;
+  border: 2px solid transparent; /* creates padding effect */
+  background-clip: padding-box;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+}
+.tableWrap::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--card-2), var(--card));
+}
+
+.table { width:100%; border-collapse:collapse; font-size:13px }
+.table thead th {
+  padding:10px 12px;
+  text-align:left;
+  /* slightly more muted, subtly less dominant */
+  color: var(--muted);
+  font-weight:600;
+  font-size:13px;
+  text-transform: uppercase; /* clearer header labels */
+  letter-spacing: 0.03em;
+
+  /* sticky header */
+  position: sticky;
+  top: 0;
+  z-index: 20; /* increased so it sits above other cards/content */
+  background: linear-gradient(180deg, var(--card), rgba(255,255,255,0.02));
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(255,255,255,0.08); /* stronger dividing line */
+  box-shadow: 0 6px 14px rgba(2,6,23,0.35); /* subtle elevation to separate from rows */
+}
+.table tbody td { padding:12px 12px; color:var(--text); border-bottom:1px solid rgba(255,255,255,0.03) }
+.table tbody tr { transition: background .12s ease, transform .12s ease }
+.table tbody tr:hover { background: rgba(255,255,255,0.02); transform: translateY(-2px) }
+.table tbody tr:nth-child(odd) { background: rgba(255,255,255,0.01) }
+.emptyRow { text-align:center; color:var(--muted); padding:24px 0 }
+
+/* Pills */
+.pill { display:inline-block; padding:6px 10px; border-radius:999px; font-weight:700; font-size:12px; color:#fff }
+.pillDanger { background: linear-gradient(90deg,var(--fraud), #f97316); box-shadow: 0 8px 18px rgba(239,68,68,0.12) }
+.pillSuccess { background: linear-gradient(90deg,var(--safe), #86efac); box-shadow: 0 8px 18px rgba(34,197,94,0.12) }
+
+/* Footer / Status bar - sticky at bottom of main */
+.footer {
+  height: var(--footer-h);
+  flex: 0 0 var(--footer-h);
+  position: sticky;
+  bottom: 0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding: 8px 12px;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  background: rgba(10,18,30,0.5);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-radius: 0 0 10px 10px;
+  font-size: 13px;
+  color: var(--muted);
+  box-shadow: 0 -6px 18px rgba(2,6,23,0.35);
+  z-index: 70; /* ensure footer sits above content */
+}
+.footer .left, .footer .center, .footer .right { display:flex; align-items:center; gap:12px }
+.footer .center { flex: 1 1 auto; justify-content:center }
+.footer .right { justify-content:flex-end }
+
+/* Info cards used earlier (kept for small screens if needed) */
+.infoRow { display:flex; gap:12px; margin-top:12px; flex: 0 0 auto }
+.infoCard { padding:8px }
+
+/* Responsive tweaks */
+@media (max-width: 1100px) {
+  .kpiRow { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .main { max-width: 980px }
+}
+@media (max-width: 700px) {
+  .kpiRow { grid-template-columns: 1fr }
+  .searchInput { width:120px }
+  .pageTitle { font-size:16px }
+}

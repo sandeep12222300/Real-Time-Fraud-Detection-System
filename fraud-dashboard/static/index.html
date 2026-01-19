@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Real-Time Fraud Dashboard (Static)</title>
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page">
+    <div class="main">
+      <header id="topNav" class="topNav">
+        <div class="topLeft">
+          <div class="pageTitle">Real-Time Fraud Dashboard</div>
+          <div class="pageSubtitle">Monitoring transactions and model predictions</div>
+        </div>
+        <div class="topRight">
+          <div class="search">
+            <span class="icon">🔍</span>
+            <input id="searchInput" class="searchInput" placeholder="Search transactions, ids..." />
+          </div>
+          <button id="notifyBtn" class="iconBtn" title="Notifications">🔔</button>
+          <div class="profile">
+            <div class="avatar">SD</div>
+            <div class="profileName">Sandeep</div>
+            <button id="refreshBtn" class="iconBtn" title="Refresh" aria-label="Refresh">Refresh</button>
+          </div>
+        </div>
+      </header>
+
+      <div class="content">
+        <div id="kpiRow" class="kpiRow">
+          <div class="statCard" data-kpi="total">
+            <div class="statTop"><div class="statIcon"></div><div><div class="statLabel">Total Transactions</div></div></div>
+            <div class="statValueRow"><div class="statValue">0</div><div class="statDelta"></div></div>
+          </div>
+          <div class="statCard" data-kpi="fraud">
+            <div class="statTop"><div class="statIcon"></div><div><div class="statLabel">Fraud Count</div></div></div>
+            <div class="statValueRow"><div class="statValue">0</div><div class="statDelta"></div></div>
+          </div>
+          <div class="statCard" data-kpi="safe">
+            <div class="statTop"><div class="statIcon"></div><div><div class="statLabel">Safe Count</div></div></div>
+            <div class="statValueRow"><div class="statValue">0</div><div class="statDelta"></div></div>
+          </div>
+          <div class="statCard" data-kpi="fraudRate">
+            <div class="statTop"><div class="statIcon"></div><div><div class="statLabel">Fraud Rate</div></div></div>
+            <div class="statValueRow"><div class="statValue">0%</div><div class="statDelta"></div></div>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="chartsRow">
+            <div class="chartCard">
+              <div class="chartHeader">Fraud vs Safe Transactions</div>
+              <div id="barChart" class="chartBody"></div>
+            </div>
+            <div class="chartCard">
+              <div class="chartHeader">Confidence Trend</div>
+              <div id="lineChart" class="chartBody"></div>
+            </div>
+          </div>
+
+          <div class="bottomRow">
+            <div class="tableCard">
+              <div class="tableHeader">
+                <div class="tableTitle">Recent Predictions</div>
+                <div id="tableMeta" class="tableMeta"></div>
+              </div>
+              <div id="tableWrap" class="tableWrap">
+                <table id="predictionsTable" class="table">
+                  <thead>
+                    <tr>
+                      <th data-col="id">ID</th>
+                      <th data-col="transactionId">Transaction</th>
+                      <th style="text-align:right" data-col="amount">Amount</th>
+                      <th>Status</th>
+                      <th style="text-align:right" data-col="confidence">Confidence</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td class="emptyRow" colspan="5">Loading...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <footer id="footer" class="footer">
+        <div class="left"><div style="color:var(--muted)">Status: <strong style="color:var(--text); margin-left:8px">Connected</strong></div></div>
+        <div class="center"><div style="font-size:12px;color:var(--muted);display:flex;gap:12px;align-items:center"><div>Backend: <span id="apiUrlSpan" style="color:var(--text);margin-left:6px">/api/fraud/predictions</span></div><div>Last updated: <span id="lastUpdatedSpan" style="color:var(--text);margin-left:6px">-</span></div></div></div>
+        <div class="right"><div style="color:var(--muted)">© <span id="yearSpan"></span> Fraud Analytics</div></div>
+      </footer>
+    </div>
+  </div>
+
+  <div id="chartTooltip" class="chartTooltip" style="display:none;position:fixed;pointer-events:none;background:#071426;color:#E6EEF9;padding:8px;border-radius:6px;font-size:12px;z-index:9999;box-shadow:0 6px 18px rgba(0,0,0,0.6)"></div>
+
+  <script src="api.js" defer></script>
+  <script src="charts.js" defer></script>
+  <script src="app.js" defer></script>
+</body>
+</html>

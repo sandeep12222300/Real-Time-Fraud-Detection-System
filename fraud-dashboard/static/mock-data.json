@@ -1,0 +1,12 @@
+[
+  { "id": "t-1", "transactionId": "TX-1001", "amount": 1500.5, "fraud": false, "confidence": 0.12 },
+  { "id": "t-2", "transactionId": "TX-1002", "amount": 5500, "fraud": true, "confidence": 0.92 },
+  { "id": "t-3", "transactionId": "TX-1003", "amount": 220.75, "fraud": false, "confidence": 0.05 },
+  { "id": "t-4", "transactionId": "TX-1004", "amount": 9800, "fraud": true, "confidence": 0.87 },
+  { "id": "t-5", "transactionId": "TX-1005", "amount": 310.0, "fraud": false, "confidence": 0.11 },
+  { "id": "t-6", "transactionId": "TX-1006", "amount": 4200.25, "fraud": false, "confidence": 0.33 },
+  { "id": "t-7", "transactionId": "TX-1007", "amount": 12500, "fraud": true, "confidence": 0.99 },
+  { "id": "t-8", "transactionId": "TX-1008", "amount": 78.9, "fraud": false, "confidence": 0.02 },
+  { "id": "t-9", "transactionId": "TX-1009", "amount": 640.6, "fraud": false, "confidence": 0.16 },
+  { "id": "t-10", "transactionId": "TX-1010", "amount": 25000, "fraud": true, "confidence": 0.98 }
+]
