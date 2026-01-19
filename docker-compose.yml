@@ -54,7 +54,7 @@ services:
       retries: 5
 
   ml-service:
-    image: sandeep12222300/fraud-ml-service:latest
+    image: sandeep12222300/fraud-ml-service:sha-6dedc4e
     container_name: ml-service
     ports:
       - "8000:8000"
@@ -66,7 +66,7 @@ services:
 
 
   fraud-processor:
-    image: sandeep12222300/fraud-processor:latest
+    image: sandeep12222300/fraud-processor:sha-6dedc4e
     container_name: fraud-processor
     depends_on:
       kafka:
@@ -95,7 +95,7 @@ services:
           memory: 1G
 
   transaction-producer:
-    image: sandeep12222300/transaction-producer:latest
+    image: sandeep12222300/transaction-producer:sha-6dedc4e
     container_name: transaction-producer
     depends_on:
       kafka:
@@ -114,7 +114,7 @@ services:
           memory: 512M
 
   fraud-dashboard:
-    image: sandeep12222300/fraud-dashboard:latest
+    image: sandeep12222300/fraud-dashboard:sha-6dedc4e
     container_name: fraud-dashboard
     ports:
       - "3000:80"
