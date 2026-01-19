@@ -14,6 +14,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set image tag
+        run: echo "IMAGE_TAG=sha-${GITHUB_SHA::7}" >> $GITHUB_ENV
+
+
       # -------------------------
       # Java - Fraud Processor
       # -------------------------
@@ -83,20 +87,21 @@ jobs:
       # -------------------------
       - name: Build & Push Fraud Processor
         run: |
-          docker build -t sandeep12222300/fraud-processor:latest ./fraud-processor
-          docker push sandeep12222300/fraud-processor:latest
+          docker build -t sandeep12222300/fraud-processor:${IMAGE_TAG} ./fraud-processor
+          docker push sandeep12222300/fraud-processor:${IMAGE_TAG}
 
       - name: Build & Push Transaction Producer
         run: |
-          docker build -t sandeep12222300/transaction-producer:latest ./transaction-producer
-          docker push sandeep12222300/transaction-producer:latest
+          docker build -t sandeep12222300/transaction-producer:${IMAGE_TAG} ./transaction-producer
+          docker push sandeep12222300/transaction-producer:${IMAGE_TAG}
 
       - name: Build & Push ML Service
         run: |
-          docker build -t sandeep12222300/fraud-ml-service:latest ./fraud-ml-service
-          docker push sandeep12222300/fraud-ml-service:latest
+          docker build -t sandeep12222300/fraud-ml-service:${IMAGE_TAG} ./fraud-ml-service
+          docker push sandeep12222300/fraud-ml-service:${IMAGE_TAG}
 
       - name: Build & Push Fraud Dashboard
         run: |
-          docker build -t sandeep12222300/fraud-dashboard:latest ./fraud-dashboard
-          docker push sandeep12222300/fraud-dashboard:latest
+          docker build -t sandeep12222300/fraud-dashboard:${IMAGE_TAG} ./fraud-dashboard
+          docker push sandeep12222300/fraud-dashboard:${IMAGE_TAG}
+     
